@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- Task scheduler -->
+    <bean id="taskScheduler" class="org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler">
+        <property name="poolSize" value="1"/>
+    </bean>
+
+    <!-- Schedule Parser Service  -->
+    <bean id="scheduleParser" class="org.amikhalev.sprinklers.service.impl.HumanReadableScheduleParser"/>
+
+    <!-- Scheduler -->
+    <bean id="scheduler" class="org.amikhalev.sprinklers.service.impl.SchedulerImpl">
+        <constructor-arg ref="taskScheduler"/>
+        <constructor-arg ref="scheduleParser"/>
+    </bean>
+
+    <!-- In-process hsqldb server -->
+    <!--<bean id="hsqldbServer" class="org.amikhalev.sprinklers.beans.HsqlDbServerFactoryBean" init-method="start"-->
+    <!--destroy-method="stop">-->
+    <!--<property name="address" value="localhost"/>-->
+    <!--<property name="port" value="9898"/>-->
+    <!--<property name="defaultDatabasePath" value="file:db/sprinklers.db"/>-->
+    <!--<property name="defaultDatabaseName" value="sprinklers"/>-->
+    <!--</bean>-->
+
+    <!-- Data source -->
+    <bean class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close" id="dataSource">
+        <!--depends-on="hsqldbServer">-->
+        <property name="driverClassName" value="org.hsqldb.jdbcDriver"/>
+        <!--<property name="url" value="jdbc:hsqldb:file:db/data.db;shutdown=true"/>-->
+        <!--<property name="url" value="jdbc:hsqldb:mem:mydb"/>-->
+        <property name="url" value="jdbc:hsqldb:hsql://localhost:9898/sprinklers"/>
+        <property name="username" value="sa"/>
+        <property name="password" value=""/>
+    </bean>
+
+    <!-- Initialize data source -->
+    <jdbc:initialize-database data-source="dataSource">
+        <jdbc:script location="schema.sql"/>
+        <jdbc:script location="test-data.sql"/>
+    </jdbc:initialize-database>
+
+    <!-- Factory for EntityManagers -->
+    <bean id="entityManagerFactory"
+          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean class="org.springframework.orm.jpa.JpaTransactionManager"
+          id="transactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+
+    <!-- Configure repositories -->
+    <jpa:repositories base-package="org.amikhalev.sprinklers.repositories"/>
+
+    <!-- Enable config from java annotations -->
+    <context:annotation-config/>
+
+    <!-- Create beans from AppConfig -->
+    <bean class="org.amikhalev.sprinklers.AppConfig"/>
+</beans>

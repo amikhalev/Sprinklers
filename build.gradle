@@ -1,0 +1,38 @@
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'idea'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.apache.commons:commons-dbcp2:2.1'
+    compile 'log4j:log4j:1.2.17'
+    compile 'org.slf4j:slf4j-log4j12:1.7.12'
+    compile 'org.springframework:spring-context:4.1.6.RELEASE'
+    compile 'org.springframework:spring-beans:4.1.6.RELEASE'
+    compile 'org.springframework:spring-orm:4.1.6.RELEASE'
+    compile 'org.springframework:spring-jdbc:4.1.6.RELEASE'
+    compile 'org.springframework:spring-test:4.1.6.RELEASE'
+    compile 'org.springframework:spring-tx:4.1.6.RELEASE'
+    compile 'org.springframework.data:spring-data-jpa:1.8.0.RELEASE'
+    compile 'org.hibernate:hibernate-core:4.3.9.Final'
+    compile 'org.hibernate:hibernate-entitymanager:4.3.9.Final'
+    compile 'org.hsqldb:hsqldb:2.3.2'
+    compile 'joda-time:joda-time:2.7'
+    compile 'com.google.code.gson:gson:2.3.1'
+    compile 'com.google.guava:guava:18.0'
+    testCompile 'junit:junit:4.11'
+}
+
+mainClassName = 'org.amikhalev.sprinklers.Application'
+
+jar {
+    baseName = 'sprinklers'
+    version = '1.0.0'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
