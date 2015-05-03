@@ -1,9 +1,14 @@
+# Gradle build files
 .gradle
-/local.properties
+/build
+
+# IntelliJ Files
 /.idea/workspace.xml
 /.idea/libraries
-.DS_Store
-/build
-/target
-/db
 /out/
+
+# OS X files
+.DS_Store
+
+# Project files
+/db
