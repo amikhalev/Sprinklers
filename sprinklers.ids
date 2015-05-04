@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="HSQLDB - sprinklers@localhost" uuid="08892225-5394-44d0-addc-a63a6150333b">
+    <database-info product="HSQL Database Engine" version="2.3.2" jdbc-version="4.0" driver-name="HSQL Database Engine Driver" driver-version="2.3.2">
+      <identifier-quote-string>&quot;</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="upper" quoted-identifiers="exact"/>
+    <schema name="PUBLIC" catalog="PUBLIC"/>
+    <table name="PROGRAMS" schema="PUBLIC" catalog="PUBLIC" type="TABLE">
+      <column name="ID" sqlType="INTEGER" precision="32" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="NAME" sqlType="VARCHAR" precision="30" scale="0" nullable="false" jdbcType="12"/>
+      <column name="SCHEDULE" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
+      <column name="ENABLED" sqlType="BOOLEAN" precision="0" scale="0" nullable="false" jdbcType="16"/>
+      <primary-key name="SYS_PK_10139" columns="ID"/>
+      <exported-key name="SYS_FK_10159" table="PROGRAMSECTIONS" schema="PUBLIC" catalog="PUBLIC" columns="PROGRAM_ID"/>
+    </table>
+    <table name="PROGRAMSECTIONS" schema="PUBLIC" catalog="PUBLIC" type="TABLE">
+      <column name="ID" sqlType="INTEGER" precision="32" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="INDEX" sqlType="INTEGER" precision="32" scale="0" nullable="true" jdbcType="4"/>
+      <column name="PROGRAM_ID" sqlType="INTEGER" precision="32" scale="0" nullable="false" jdbcType="4"/>
+      <column name="SECTION_ID" sqlType="INTEGER" precision="32" scale="0" nullable="false" jdbcType="4"/>
+      <column name="TIME" sqlType="DOUBLE" precision="64" scale="0" nullable="false" jdbcType="8"/>
+      <primary-key name="SYS_PK_10158" columns="ID"/>
+      <foreign-key name="SYS_FK_10159" columns="PROGRAM_ID" ref-table="PROGRAMS" ref-schema="PUBLIC" ref-catalog="PUBLIC" ref-columns="ID" update-rule="3" delete-rule="3"/>
+      <foreign-key name="SYS_FK_10160" columns="SECTION_ID" ref-table="SECTIONS" ref-schema="PUBLIC" ref-catalog="PUBLIC" ref-columns="ID" update-rule="3" delete-rule="3"/>
+    </table>
+    <table name="SECTIONS" schema="PUBLIC" catalog="PUBLIC" type="TABLE">
+      <column name="ID" sqlType="INTEGER" precision="32" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="NAME" sqlType="VARCHAR" precision="30" scale="0" nullable="false" jdbcType="12"/>
+      <column name="SECTION" sqlType="VARCHAR" precision="200" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="SYS_PK_10149" columns="ID"/>
+      <exported-key name="SYS_FK_10160" table="PROGRAMSECTIONS" schema="PUBLIC" catalog="PUBLIC" columns="SECTION_ID"/>
+    </table>
+  </data-source>
+</component>

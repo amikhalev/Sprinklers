@@ -1,14 +1,21 @@
 package org.amikhalev.sprinklers;
 
+import com.sun.net.httpserver.HttpServer;
 import org.amikhalev.sprinklers.model.Program;
 import org.amikhalev.sprinklers.model.SectionModel;
 import org.amikhalev.sprinklers.repositories.ProgramRepository;
 import org.amikhalev.sprinklers.repositories.SectionModelRepository;
+import org.amikhalev.sprinklers.resource.TestResource;
 import org.amikhalev.sprinklers.service.Scheduler;
+import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
+import org.glassfish.jersey.server.ResourceConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import javax.ws.rs.core.UriBuilder;
+import java.net.URI;
 
 /**
  * Created by alex on 4/20/15.
@@ -34,5 +41,11 @@ public class Application {
             scheduler.schedule(program);
             scheduler.execute(program);
         }
+
+        URI baseUri = UriBuilder.fromUri("http://localhost/").port(9899).build();
+        ResourceConfig serverConfig = new ResourceConfig();
+        serverConfig.register(TestResource.class);
+        serverConfig.property("contextConfig", context);
+        HttpServer server = JdkHttpServerFactory.createHttpServer(baseUri, serverConfig);
     }
 }
