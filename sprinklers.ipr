@@ -197,7 +197,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Sprinklers.iml" filepath="$PROJECT_DIR$/Sprinklers.iml" />
-      <module fileurl="file://$PROJECT_DIR$/sprinklers.iml" filepath="$PROJECT_DIR$/sprinklers.iml" />
     </modules>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">

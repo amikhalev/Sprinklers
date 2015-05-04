@@ -5,7 +5,7 @@ import org.amikhalev.sprinklers.model.Program;
 import org.amikhalev.sprinklers.model.SectionModel;
 import org.amikhalev.sprinklers.repositories.ProgramRepository;
 import org.amikhalev.sprinklers.repositories.SectionModelRepository;
-import org.amikhalev.sprinklers.resource.TestResource;
+import org.amikhalev.sprinklers.rest.TestResource;
 import org.amikhalev.sprinklers.service.Scheduler;
 import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -20,13 +20,20 @@ import java.net.URI;
 /**
  * Created by alex on 4/20/15.
  */
-public class Application {
+public class Application extends ResourceConfig {
     private static final Logger logger = LoggerFactory.getLogger(Application.class);
+    private ApplicationContext context;
+    private HttpServer server;
 
-    public static void main(String[] args) {
-        ApplicationContext context = new ClassPathXmlApplicationContext("spring-config.xml");
+    public Application() {
+        packages("org.amikhalev.sprinklers.rest");
+    }
+
+    public void start() {
+        context = new ClassPathXmlApplicationContext("spring-config.xml");
+        this.property("contextConfig", context);
+
         Scheduler scheduler = (Scheduler) context.getBean("scheduler");
-
         SectionModelRepository sectionModelRepository = (SectionModelRepository) context.getBean("sectionModelRepository");
         ProgramRepository programRepository = (ProgramRepository) context.getBean("programRepository");
 
@@ -43,9 +50,10 @@ public class Application {
         }
 
         URI baseUri = UriBuilder.fromUri("http://localhost/").port(9899).build();
-        ResourceConfig serverConfig = new ResourceConfig();
-        serverConfig.register(TestResource.class);
-        serverConfig.property("contextConfig", context);
-        HttpServer server = JdkHttpServerFactory.createHttpServer(baseUri, serverConfig);
+        server = JdkHttpServerFactory.createHttpServer(baseUri, this);
+    }
+
+    public static void main(String[] args) {
+        new Application().start();
     }
 }
