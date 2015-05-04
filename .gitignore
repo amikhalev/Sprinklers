@@ -6,6 +6,7 @@
 /.idea/workspace.xml
 /.idea/libraries
 /out/
+/*.iws
 
 # OS X files
 .DS_Store
