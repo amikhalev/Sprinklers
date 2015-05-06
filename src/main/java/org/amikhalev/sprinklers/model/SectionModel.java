@@ -1,6 +1,10 @@
 package org.amikhalev.sprinklers.model;
 
-import org.amikhalev.sprinklers.converters.SectionConverter;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import org.amikhalev.sprinklers.model.converters.SectionConverter;
 import org.amikhalev.sprinklers.service.Section;
 
 import javax.persistence.*;
@@ -12,6 +16,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "Sections")
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "id")
 public class SectionModel {
     @Id
     @Column(name = "id", nullable = false)
@@ -26,6 +31,7 @@ public class SectionModel {
     private Section section;
 
     @OneToMany(mappedBy = "sectionModel", fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<ProgramSection> programSections = new HashSet<>();
 
     public SectionModel() {
@@ -59,6 +65,7 @@ public class SectionModel {
         this.name = name;
     }
 
+    @JsonValue
     public Section getSection() {
         return section;
     }
@@ -72,6 +79,23 @@ public class SectionModel {
     }
 
     public void setProgramSections(Set<ProgramSection> programSections) {
+        programSections.stream().forEach(programSection -> programSection.setSectionModel(this));
         this.programSections = programSections;
+    }
+
+    public void addProgramSection(ProgramSection programSection) {
+        if (!programSections.contains(programSection)) {
+            programSections.add(programSection);
+            programSection.setSectionModel(this);
+        }
+    }
+
+    public boolean removeProgramSection(ProgramSection programSection) {
+        if (programSections.remove(programSection)) {
+            programSection.setSectionModel(null);
+            return true;
+        } else {
+            return false;
+        }
     }
 }

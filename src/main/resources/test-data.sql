@@ -11,7 +11,7 @@ VALUES (3, 'Section 4', '{"class":"org.amikhalev.sprinklers.service.impl.TestSec
 INSERT INTO SECTIONS
 VALUES (4, 'Section 5', '{"class":"org.amikhalev.sprinklers.service.impl.TestSection","data":{}}');
 INSERT INTO SECTIONS
-VALUES (5, 'Section 6', '{"class":"org.amikhalev.sprinklers.service.impl.TestSection","data":{}}');
+VALUES (5, 'Section 6', '{"class":"org.amikhalev.sprinklers.service.impl.GpioSection","data":{"port":4}}');
 
 -- Example program
 -- (id, name, schedule, enabled)

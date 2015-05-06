@@ -1,5 +1,7 @@
 package org.amikhalev.sprinklers.model;
 
+import com.google.common.base.Objects;
+
 import javax.persistence.*;
 
 /**
@@ -7,6 +9,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "ProgramSections")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "id")
 public class ProgramSection {
     @Id
     @Column(name = "id", nullable = false)
@@ -25,7 +28,7 @@ public class ProgramSection {
     private SectionModel sectionModel;
 
     @Column
-    private double time;
+    private Double time;
 
     public ProgramSection() {
     }
@@ -43,6 +46,9 @@ public class ProgramSection {
     }
 
     public void setProgram(Program program) {
+        if (program != null && !program.containsSection(this)) {
+            throw new IllegalArgumentException("Parent program must contain this section");
+        }
         this.program = program;
     }
 
@@ -51,14 +57,20 @@ public class ProgramSection {
     }
 
     public void setSectionModel(SectionModel sectionModel) {
+        if (Objects.equal(this.sectionModel, sectionModel))
+            return;
+        if (this.sectionModel != null)
+            this.sectionModel.removeProgramSection(this);
+        if (sectionModel != null)
+            sectionModel.addProgramSection(this);
         this.sectionModel = sectionModel;
     }
 
-    public double getTime() {
+    public Double getTime() {
         return time;
     }
 
-    public void setTime(double time) {
+    public void setTime(Double time) {
         this.time = time;
     }
 }

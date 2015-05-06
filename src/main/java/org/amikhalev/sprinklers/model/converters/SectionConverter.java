@@ -1,4 +1,4 @@
-package org.amikhalev.sprinklers.converters;
+package org.amikhalev.sprinklers.model.converters;
 
 import com.google.gson.Gson;
 import org.amikhalev.sprinklers.AppConfig;

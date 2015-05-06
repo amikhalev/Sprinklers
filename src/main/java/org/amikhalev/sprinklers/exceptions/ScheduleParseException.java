@@ -1,4 +1,4 @@
-package org.amikhalev.sprinklers.service;
+package org.amikhalev.sprinklers.exceptions;
 
 /**
  * Created by alex on 4/20/15.

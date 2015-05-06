@@ -8,8 +8,8 @@ import org.slf4j.LoggerFactory;
  * Created by alex on 5/1/15.
  */
 public class GpioSection extends Section {
-    private int port;
     private static final Logger logger = LoggerFactory.getLogger(GpioSection.class);
+    private int port;
 
     public GpioSection(String name, int port) {
         super(name);

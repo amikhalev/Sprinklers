@@ -1,6 +1,6 @@
 package org.amikhalev.sprinklers.service.impl;
 
-import org.amikhalev.sprinklers.service.ScheduleParseException;
+import org.amikhalev.sprinklers.exceptions.ScheduleParseException;
 import org.hamcrest.core.StringContains;
 import org.joda.time.DateTime;
 import org.joda.time.LocalTime;

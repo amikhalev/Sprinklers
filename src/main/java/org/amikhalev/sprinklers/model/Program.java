@@ -1,7 +1,6 @@
 package org.amikhalev.sprinklers.model;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +9,6 @@ import java.util.List;
  */
 @Entity
 @Table(name = "Programs")
-@XmlRootElement
 public class Program {
     @Id
     @Column(name = "id", nullable = false)
@@ -26,7 +24,7 @@ public class Program {
     @Column(name = "enabled", nullable = false)
     private boolean enabled = true;
 
-    @OneToMany(mappedBy = "program", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "program", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderColumn(name = "index")
     private List<ProgramSection> sections = new ArrayList<ProgramSection>();
 
@@ -70,8 +68,13 @@ public class Program {
     }
 
     public void setSections(List<ProgramSection> sections) {
+        this.sections.stream().forEach(section -> section.setProgram(null));
         this.sections = sections;
-        sections.stream().forEach(section -> section.setProgram(this));
+        this.sections.stream().forEach(section -> section.setProgram(this));
+    }
+
+    boolean containsSection(ProgramSection section) {
+        return sections.contains(section);
     }
 
     @Override

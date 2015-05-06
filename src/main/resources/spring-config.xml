@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
@@ -59,6 +60,21 @@
 
     <!-- Configure repositories -->
     <jpa:repositories base-package="org.amikhalev.sprinklers.repositories"/>
+
+    <bean id="sectionObjectConverter" class="org.amikhalev.sprinklers.dto.converters.SectionObjectConverter"/>
+
+    <bean id="beanMapper" class="org.dozer.DozerBeanMapper">
+        <property name="mappingFiles">
+            <list>
+                <value>dozer-config.xml</value>
+            </list>
+        </property>
+        <property name="customConvertersWithId">
+            <map>
+                <entry key="sectionObjectConverter" value-ref="sectionObjectConverter"/>
+            </map>
+        </property>
+    </bean>
 
     <!-- Enable config from java annotations -->
     <context:annotation-config/>

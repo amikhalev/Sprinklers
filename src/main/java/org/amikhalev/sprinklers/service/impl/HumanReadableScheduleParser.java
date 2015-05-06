@@ -1,6 +1,6 @@
 package org.amikhalev.sprinklers.service.impl;
 
-import org.amikhalev.sprinklers.service.ScheduleParseException;
+import org.amikhalev.sprinklers.exceptions.ScheduleParseException;
 import org.amikhalev.sprinklers.service.ScheduleParser;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -14,9 +14,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static java.util.EnumSet.allOf;
-import static java.util.EnumSet.noneOf;
-import static java.util.EnumSet.range;
+import static java.util.EnumSet.*;
 import static org.amikhalev.sprinklers.service.impl.HumanReadableScheduleParser.Type.*;
 
 /**
